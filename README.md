@@ -54,18 +54,4 @@ sudo ldconfig
 sudo ldconfig /usr/local/lib64/
 dpkg -l | grep pbc
 
-# unistall 
-(base) apollo@apollo-Nuvo-8108GC-Series:~$ sudo /usr/bin/pip3 uninstall Charm-Crypto
 
-# charm
-# https://github.com/JHUISI/charm)
-# https://www.codeleading.com/article/27614243225/
-# https://cxybb.com/article/qq_34018719/115007249
-# change ownership to user [not root]
-sudo chown -R apollo:apollo ./
-./configure.sh
-make
-make install
-
-sudo ldconfig /usr/local/lib64/
-```
