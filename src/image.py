@@ -3,9 +3,8 @@ import os
 from Crypto.Cipher import AES
 import cv2
 from matplotlib import pyplot as plt
-from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
-import PIL
+from PIL import Image
+
 
 def encrypt(inputkey):
     global keyenc
@@ -26,7 +25,6 @@ def encrypt(inputkey):
     enc2pngcolor(input_data)
     # enc2pnggrey(input_data)
     histogram_image("../doc/encrypted_lenna.png", '../doc/encrypted_histogram.png')
-
 
 
 def decrypt(outputkey):
