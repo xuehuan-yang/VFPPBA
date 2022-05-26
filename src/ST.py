@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 """
-from functools import reduce
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
-import random
 import time
 import numpy as np
 import image
@@ -157,11 +155,11 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return CT_, rt
 
-    def dec1_ippre(self, ahnipe, n, SK, CT, SK_, CT_):
+    def dec1_ippre(self, n, SK, CT, SK_, CT_):
         start = time.time()
 
-        M_output_1 = M_output_1_function(ahnipe, n, SK, CT)
-        M1_output = M_output_1_function(ahnipe, n, SK_, CT_['CT1'])
+        M_output_1 = M_output_1_function(n, SK, CT)
+        M1_output = M_output_1_function(n, SK_, CT_['CT1'])
 
         end = time.time()
         rt = end - start
@@ -239,7 +237,7 @@ def CT2_function(n, RK, CT):
     return CT2
 
 
-def M_output_1_function(ahnipe, n, SK, CT):
+def M_output_1_function(n, SK, CT):
     D = CT['D']
     A = CT['A']
     B = CT['B']
@@ -336,7 +334,7 @@ def main():
                 RK, CT1, SK_, v_, rekeygentime = ahnipe.reKeyGen_ippre(ahnipe, n, v, M1, PK, MSK)
                 CT_, reenctime = ahnipe.reenc_ippre(n, RK, CT, CT1)
 
-                M_output_1, M1_output, dec1time = ahnipe.dec1_ippre(ahnipe, n, SK, CT, SK_, CT_)
+                M_output_1, M1_output, dec1time = ahnipe.dec1_ippre(n, SK, CT, SK_, CT_)
                 M_output_2, dec2time = ahnipe.dec2_ippre(CT_)
 
                 print("\nn, seq", n, j)
@@ -345,7 +343,6 @@ def main():
 
                 print("M_input:   ", M)
                 print("M_output_1:", M_output_1)
-                # print("M_output_2:", M_output_2)
 
                 m_inputkey = group.serialize(M).decode("utf-8")
                 m_outputkey = group.serialize(M_output_1).decode("utf-8")
@@ -364,6 +361,7 @@ def main():
             out7 = str(format(dec2tot / float(seq), '.16f'))
             f.write(out0 + '  ' + out1 + ' ' + out2 + ' ' + out3 + ' ' + out4 + ' ' + out5 + ' ' + out6 + ' ' + out7)
             f.write('\n')
+
 
 if __name__ == "__main__":
     main()

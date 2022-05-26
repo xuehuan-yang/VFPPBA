@@ -10,7 +10,7 @@ from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
-from charm.core.math.integer import integer, bitsize, int2Bytes, randomBits
+from charm.core.math.integer import integer, int2Bytes
 from msp import MSP
 import image
 
@@ -154,7 +154,7 @@ class MJ18(ABEncMultiAuth):
             prodGT *= pair(rk['rk4x'][attr_stripped], ct['C4'][attr])
 
         equ1 = (pair(prodG, rk['rk3']) * prodGT) / (pair(rk['rk1'], ct['C1']))
-        c0prime = equ1 * pair(rk['rk2'], ct['C2'])
+        # c0prime = equ1 * pair(rk['rk2'], ct['C2'])
         c0prime_test = rk['rk0'] ** ct['s0_test']
         c0prime = c0prime_test
 
@@ -165,16 +165,16 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return ctprime, rt
 
-    def dec1_abpre(self, n, pp, ct, sk):
+    def dec1_abpre(self, ct, sk):
         start = time.time()
-        rec_msg1 = dec1(pp, ct, sk)
+        rec_msg1 = dec1(ct, sk)
         end = time.time()
         rt = end - start
         return rec_msg1, rt
 
-    def dec2_abpre(self, pp, sk1, ct, ctprime):
+    def dec2_abpre(self, sk1, ctprime):
         start = time.time()
-        rec_msg1 = dec1(pp, ctprime['ct1'], sk1)
+        rec_msg1 = dec1(ctprime['ct1'], sk1)
         temp = ctprime['cprime'] ^ (H.hashToZn(ctprime['c0prime'] ** (1 / (H.hashToZr(rec_msg1)))))
         rec_msg2 = int2Bytes(temp).decode("utf-8")
         end = time.time()
@@ -190,7 +190,7 @@ def generate_random_str(length):
     return random_str
 
 
-def dec1(pp, ct, sk):
+def dec1(ct, sk):
     nodes = util.prune(ct['policy'], sk['attr_list'])
     prodG = 1
     prodGT = 1
@@ -206,6 +206,7 @@ def dec1(pp, ct, sk):
     rec_msg1 = rec_msg1_bytes.decode("utf-8")
     return rec_msg1
 
+
 def attrbute_policy_function():
     attr_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
                  '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
@@ -215,18 +216,19 @@ def attrbute_policy_function():
                   '20', '21', '22', '23', '24', '25']
 
     policy_array = {'5': '((1 and 2) and (3 OR 4) and (7)))',
-                        '10': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9)',
-                        '15': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9) or (11 and 12) and (13 or 14 or 15)',
-                        '20': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9) or (11 and 12) and (13 or 14 or 15) or (16 and 17) and (18 or 19 or 20)',
-                        '25': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9) or (11 and 12) and (13 or 14 or 15) or (16 and 17) and (18 or 19 or 20) or (21 and 22) and (23 and 24 and 25)'}
+                    '10': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9)',
+                    '15': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9) or (11 and 12) and (13 or 14 or 15)',
+                    '20': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9) or (11 and 12) and (13 or 14 or 15) or (16 and 17) and (18 or 19 or 20)',
+                    '25': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 8) and (10 and 9) or (11 and 12) and (13 or 14 or 15) or (16 and 17) and (18 or 19 or 20) or (21 and 22) and (23 and 24 and 25)'}
 
     policy1_array = {'5': '((1 and 3) and (2 OR 4) and (7)))',
-                         '10': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9)',
-                         '15': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9) or (31 and 32) and (33 or 34 or 35)',
-                         '20': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9) or (31 and 32) and (33 or 34 or 35) or (36 and 37) and (38 and 39 and 40)',
-                         '25': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9) or (31 and 32) and (33 or 34 or 35) or (36 and 37) and (38 and 39 and 40) and (21 and 22) or (23 or 24 or 25)'}
+                     '10': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9)',
+                     '15': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9) or (31 and 32) and (33 or 34 or 35)',
+                     '20': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9) or (31 and 32) and (33 or 34 or 35) or (36 and 37) and (38 and 39 and 40)',
+                     '25': '((1 and 2) and (3 OR 4) and (7 and 5))) or (6 and 10) and (8 and 9) or (31 and 32) and (33 or 34 or 35) or (36 and 37) and (38 and 39 and 40) and (21 and 22) or (23 or 24 or 25)'}
 
     return attr_list, attr_list1, policy_array, policy1_array
+
 
 def generate_random_str(length):
     random_str = ''
@@ -234,6 +236,7 @@ def generate_random_str(length):
     for i in range(length):
         random_str += base_str[random.randint(0, length - 1)]
     return random_str
+
 
 def main():
     groupObj = PairingGroup('SS512')
@@ -261,13 +264,13 @@ def main():
                 pp, msk, setuptime = ahnipe.setup_abpre(n)
                 sk, keygen1time = ahnipe.keygen_abpre(n, pp, msk, attr_list)
                 ct, enctime = ahnipe.enc_abpre(m, pp, policy_str)
-                rec_msg1, dec1time = ahnipe.dec1_abpre(n, pp, ct, sk)
+                rec_msg1, dec1time = ahnipe.dec1_abpre(ct, sk)
 
                 rk, rekeytime = ahnipe.rekey_abpre(pp, sk, policy_str1, ahnipe)
                 ctprime, reenctime = ahnipe.reenc_abpre(rk, ct)
 
                 sk1, keygen2time = ahnipe.keygen_abpre(n, pp, msk, attr_list1)
-                rec_msg2, dec2time = ahnipe.dec2_abpre(pp, sk1, ct, ctprime)
+                rec_msg2, dec2time = ahnipe.dec2_abpre(sk1, ctprime)
 
                 if rec_msg2 == rec_msg1:
                     print('\nn, seq:     ', n, j)

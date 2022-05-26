@@ -6,13 +6,9 @@ from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
-import hashlib
 from charm.toolbox.hash_module import Hash
 import image
 
-
-
-np.random.seed(0)
 
 class MJ18(ABEncMultiAuth):
     def __init__(self, groupObj, verbose=False):
@@ -49,10 +45,9 @@ class MJ18(ABEncMultiAuth):
         inputGT = group.random(GT)
         H = H_function(h, inputGT)
 
-
         uby = g_exp(u, beta * gamma)
         eguby = pair(g, uby)
-        pp = {'g0': g0, 'g1':g1, 'g2n': g2n, 'h0': h0, 'h1': h1, 'h2n': h2n, 'H': H, 'eguby': eguby}
+        pp = {'g0': g0, 'g1': g1, 'g2n': g2n, 'h0': h0, 'h1': h1, 'h2n': h2n, 'H': H, 'eguby': eguby}
         msk = {'uby': uby, 'u0': u0, 'u1': u1, 'u2n': u2n}
 
         end = time.time()
@@ -123,18 +118,16 @@ class MJ18(ABEncMultiAuth):
         y = sk['y']
         h1 = pp['h1']
         h2n = pp['h2n']
-        H = pp['H']
-        u0 = msk['u0']
 
         d4 = sk1 * g_exp(h1, R1)
         d5 = g_exp(sk2 * g_exp(h, r1), q)
 
         d6 = sk3 * g_exp(h, R1)
-        d7 = d7_function(n, H, g, u0, t, h2n, y, r1, pp)
+        d7 = d7_function(n, t, h2n, y, r1, pp)
 
         d8n = d8_function(n, y, q)
         d9 = sk2 * g_exp(h, r1)
-        atyw = {'d1': d1, 'd2n': d2n, 'd3': d3, 'd4': d4, 'd5': d5, 'd6': d6, 'd7': d7, 'd8n': d8n, 'd9':d9}
+        atyw = {'d1': d1, 'd2n': d2n, 'd3': d3, 'd4': d4, 'd5': d5, 'd6': d6, 'd7': d7, 'd8n': d8n, 'd9': d9}
 
         end = time.time()
         rt = end - start
@@ -189,7 +182,6 @@ class MJ18(ABEncMultiAuth):
         end = time.time()
         rt = end - start
         return M_output_1, rt
-
 
     def dec2_ibbpre(self, n, pp, sk1, ctxw):
         start = time.time()
@@ -302,7 +294,7 @@ def d2n_function(n, g0, wn, t, g2n):
     return res
 
 
-def d7_function(n, H, g, u0, t, h2n, y, r1, pp):
+def d7_function(n, t, h2n, y, r1, pp):
     egubyt = pp['eguby'] ** t
     temp = 1
     for i in range(n):
@@ -315,7 +307,7 @@ def d8_function(n, y, q):
     res = [0 for i in range(n)]
 
     for i in range(n):
-        res[i] = y[i] / (q*ele1)
+        res[i] = y[i] / (q * ele1)
     return res
 
 
@@ -331,8 +323,6 @@ def C6_function(n, c0, c2n, d8n, d5, c3, d6, c1, d4, d9, y):
     return res
 
 
-
-
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
@@ -343,7 +333,7 @@ def main():
             "Seq SetupAveTime       RegisterAveTime    EncAveTime         Dec1AVeTime        AuthorizeAveTime   TransformAveTime   Dec2AveTime   " + '\n')
         for i in range(len(n_array)):
             seq = 5
-            sttot, rgtot, enctot, dec1tot, autot, trtot,  dec2tot = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+            sttot, rgtot, enctot, dec1tot, autot, trtot, dec2tot = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
             for j in range(seq):
                 ahnipe = MJ18(groupObj)
                 n = n_array[i]
@@ -355,7 +345,7 @@ def main():
                 ctxw, transformtime = ahnipe.transform_ibbpre(n, ct, atyw, sk)
                 M_output_1, dec1time = ahnipe.dec1_ibbpre(n, sk, ct)
                 M_output_2, dec2time = ahnipe.dec2_ibbpre(n, pp, sk1, ctxw)
-    
+
                 print("\nn, seq:    ", n, j)
                 print("M_input:     ", M)
                 print("M_output_1:  ", M_output_1)
@@ -365,8 +355,7 @@ def main():
                 image.encrypt(m_inputkey)
                 image.decrypt(m_outputkey)
 
-
-                sttot, rgtot, enctot, dec1tot, autot, trtot, dec2tot = sttot + setuptime, rgtot+registertime+register1time, enctot+enctime, dec1tot+dec1time, autot+authorizetime, trtot+transformtime,  dec2tot + dec2time
+                sttot, rgtot, enctot, dec1tot, autot, trtot, dec2tot = sttot + setuptime, rgtot + registertime + register1time, enctot + enctime, dec1tot + dec1time, autot + authorizetime, trtot + transformtime, dec2tot + dec2time
 
             out0 = str(n).zfill(2)
             out1 = str(format(sttot / float(seq), '.16f'))

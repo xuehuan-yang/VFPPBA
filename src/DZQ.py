@@ -10,7 +10,7 @@ from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
-from charm.core.math.integer import integer, bitsize, int2Bytes, randomBits
+from charm.core.math.integer import int2Bytes
 from msp import MSP
 import image
 
@@ -120,14 +120,11 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return rec_msg, rt
 
-    def rkgen_ibpre(self, n, pp, ct, msk):
+    def rkgen_ibpre(self, n, pp, msk):
         start = time.time()
         sigma = group.random(ZR)
-
-        inputGT = group.random(GT)
         sprime = group.random(ZR)
         d0 = (pp['g'] ** sigma) + FHash_function(pp, pp['e_gu'] ** sprime)
-        # nprime = random.randint(0,9)
 
         tempn = n
         IDnprime = []
@@ -176,7 +173,7 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return ctprime, rt
 
-    def dec2_ibpre(self, n, pp, sk1, ct, ctprime):
+    def dec2_ibpre(self, pp, sk1, ctprime):
         start = time.time()
 
         Sprime = ctprime['IDnprime']
@@ -190,9 +187,8 @@ class MJ18(ABEncMultiAuth):
 
         temp1, temp2 = temp_function(Snew, alpha)
         equ1 = (pair(sk1['SKID'], ctprime['C1prime']) * pair(pp['g'] ** (temp1 - temp2), ctprime['C2prime_s'])) ** (
-                    1 / temp2)
+                1 / temp2)
 
-        # equ1_test = pp['e_gu'] ** (ct['s_test'])
         equ2 = FHash_function(pp, equ1)
         equ3 = ctprime['C0prime'] / equ2
         rec_msg2 = ctprime['C3prime'] / pair(equ3, ctprime['C4prime'])
@@ -232,22 +228,6 @@ def FHash_function(pp, inputGT):
     return res
 
 
-def dec1(pp, ct, sk):
-    nodes = util.prune(ct['policy'], sk['attr_list'])
-    prodG = 1
-    prodGT = 1
-
-    for node in nodes:
-        attr = node.getAttributeAndIndex()
-        attr_stripped = util.strip_index(attr)
-        prodG *= ct['C3'][attr]
-        prodGT *= pair(sk['Kx'][attr_stripped], ct['C4'][attr])
-
-    temp = (pair(prodG, sk['K2']) * prodGT) / (pair(sk['K1'], ct['C1']))
-    rec_msg = int2Bytes(ct["C"] ^ (H.hashToZn(1 / temp)))
-    return rec_msg
-
-
 def temp_function(Snew, alpha):
     temp1 = 1
     temp2 = 1
@@ -279,13 +259,13 @@ def main():
                 sk, keygen1time = ahnipe.keygen_ibpre(ID1, msk)
                 ct, m, enctime = ahnipe.enc_ibpre(n, pp, msk)
                 rec_msg1, dec1time = ahnipe.dec_ibpre(pp, ct, sk)
-                DK, rkgentime = ahnipe.rkgen_ibpre(n, pp, ct, msk)
+                DK, rkgentime = ahnipe.rkgen_ibpre(n, pp, msk)
                 ID2 = DK['IDnprime'][1]
                 sk1, keygen2time = ahnipe.keygen_ibpre(ID2, msk)
                 ctprime, reenctime = ahnipe.reenc_ibpre(n, pp, ct, DK)
-                rec_msg2, dec2time = ahnipe.dec2_ibpre(n, pp, sk1, ct, ctprime)
+                rec_msg2, dec2time = ahnipe.dec2_ibpre(pp, sk1, ctprime)
 
-                print("\nn:      ", n)
+                print('\nn, seq:   ', n, j)
                 print("m:        ", m)
                 print("rec_msg1: ", rec_msg1)
                 print("rec_msg2: ", rec_msg2)
@@ -307,6 +287,7 @@ def main():
             out7 = str(format(dec2tot / float(seq), '.16f'))
             f.write(out0 + '  ' + out1 + ' ' + out2 + ' ' + out3 + ' ' + out4 + ' ' + out5 + ' ' + out6 + ' ' + out7)
             f.write('\n')
+
 
 if __name__ == "__main__":
     main()

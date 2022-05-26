@@ -16,7 +16,7 @@ from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
-from charm.core.math.integer import integer, bitsize, int2Bytes, randomBits
+from charm.core.math.integer import integer, int2Bytes
 import image
 from sympy import *
 
@@ -78,7 +78,7 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return sk, sk1, x, x1, rt
 
-    def enc_vfippre(self, n, x, rm, rk, pp, msk):
+    def enc_vfippre(self, n, x, rm, rk, pp):
         start = time.time()
 
         m = rm
@@ -101,7 +101,7 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return ct, m, k, rt
 
-    def authorize_vfippre(self, n, x1, pp, msk, sk, ct):
+    def authorize_vfippre(self, n, x1, pp, sk, ct):
         start = time.time()
 
         wn = x1
@@ -145,7 +145,7 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return atyw, rt
 
-    def transform_vfippre(self, n, pp, ct, atyw):
+    def transform_vfippre(self, ct, atyw):
         start = time.time()
 
         c1 = ct['c1']
@@ -200,7 +200,7 @@ class MJ18(ABEncMultiAuth):
         rt = end - start
         return m, rt
 
-    def dec2_function(self, n, pp, sk1, ct, ctxw, atyw):
+    def dec2_function(self, n, sk1, ct, ctxw):
         start = time.time()
 
         C1 = ctxw['C1']
@@ -405,7 +405,7 @@ def coeffs_function(n, inputarray):
 
 def main():
     groupObj = PairingGroup('SS512')
-    n_array = np.arange(5, 15, 5)
+    n_array = np.arange(5, 30, 5)
     output_txt = '../doc/13_vfippre.txt'
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
@@ -414,7 +414,7 @@ def main():
 
         for i in range(len(n_array)):
             ahnipe = MJ18(groupObj)
-            seq = 3
+            seq = 5
             sttot, retot, enctot, dec1tot, autot, trtot, dec2tot = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
             for j in range(seq):
                 n = n_array[i]
@@ -422,12 +422,12 @@ def main():
                 rk = generate_random_str(n)
                 pp, msk, setuptime = ahnipe.setup_vfippre(n)
                 sk, sk1, x, x1, registertime = ahnipe.register_vfippre(n, msk)
-                ct, m, k, enctime = ahnipe.enc_vfippre(n, x, rm, rk, pp, msk)
-                atyw, authorizetime = ahnipe.authorize_vfippre(n, x1, pp, msk, sk, ct)
-                ctxw, transformtime = ahnipe.transform_vfippre(n, pp, ct, atyw)
+                ct, m, k, enctime = ahnipe.enc_vfippre(n, x, rm, rk, pp)
+                atyw, authorizetime = ahnipe.authorize_vfippre(n, x1, pp, sk, ct)
+                ctxw, transformtime = ahnipe.transform_vfippre(ct, atyw)
 
                 M_output_1, dec1time = ahnipe.dec1_function(n, sk, ct)
-                M_output_2, k, dec2time = ahnipe.dec2_function(n, pp, sk1, ct, ctxw, atyw)
+                M_output_2, k, dec2time = ahnipe.dec2_function(n, sk1, ct, ctxw)
 
                 print("\nn, seq ", n, j)
                 print("M_input:    ", m)
