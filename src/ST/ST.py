@@ -5,7 +5,10 @@ from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
-import image
+import sys
+sys.path.append('../')
+from common.image import *
+from common.msp import *
 
 
 class MJ18(ABEncMultiAuth):
@@ -313,7 +316,7 @@ def g_exp(g1Val, arrayInput):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = '../doc/11_ippre.txt'
+    output_txt = './ST.txt'
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
         f.write(
@@ -346,8 +349,8 @@ def main():
 
                 m_inputkey = group.serialize(M).decode("utf-8")
                 m_outputkey = group.serialize(M_output_1).decode("utf-8")
-                image.encrypt(m_inputkey)
-                image.decrypt(m_outputkey)
+                encrypt(m_inputkey)
+                decrypt(m_outputkey)
 
                 sttot, kgtot, enctot, dec1tot, rktot, retot, dec2tot = sttot + setuptime, kgtot + keygentime, enctot + enctime, dec1tot + dec1time, rktot + rekeygentime, retot + reenctime, dec2tot + dec2time
 

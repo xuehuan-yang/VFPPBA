@@ -5,12 +5,13 @@ import cv2
 from matplotlib import pyplot as plt
 from PIL import Image
 
-
+dir = '../common/image/'
 def encrypt(inputkey):
     global keyenc
-    input_file = '../doc/input_lenna.png'
-    # input_file = '../doc/input_lennagrey.png'
-    histogram_image(input_file, '../doc/input_histogram.png')
+    # input_file = dir + 'input_lenna.png'
+    input_file = dir + 'input_lennagrey.png'
+    histogram_image(input_file, dir + 'input_histogram.png')
+
     input_dir = os.path.dirname(input_file)
 
     hash = hashlib.sha256(bytes(inputkey, 'utf-8'))
@@ -22,13 +23,13 @@ def encrypt(inputkey):
     input_file.close()
     enc_image(input_data, keyenc, iv, input_dir)
     print("Enc ended successfully File Stored as: encrypted.enc")
-    enc2pngcolor(input_data)
-    # enc2pnggrey(input_data)
-    histogram_image("../doc/encrypted_lenna.png", '../doc/encrypted_histogram.png')
+    # enc2pngcolor(input_data)
+    enc2pnggrey(input_data)
+    histogram_image(dir +'encrypted_lenna.png',  dir + 'encrypted_histogram.png')
 
 
 def decrypt(outputkey):
-    output_file = '../doc/encrypted.enc'
+    output_file = dir+ 'encrypted.enc'
     output_dir = os.path.dirname(output_file)
 
     hash = hashlib.sha256(bytes(outputkey, 'utf-8'))
@@ -62,8 +63,8 @@ def dec_image(input_data, key, iv, filepath):
     output_file = open(filepath + "/output_lenna.png", "wb")
     output_file.write(plain_data)
     output_file.close()
-    output_file_histogram = '../doc/output_lenna.png'
-    histogram_image(output_file_histogram, '../doc/output_histogram.png')
+    output_file_histogram = dir +  'output_lenna.png'
+    histogram_image(output_file_histogram, dir + 'output_histogram.png')
 
 
 def histogram_image(input_data, output_dir):
@@ -75,9 +76,9 @@ def histogram_image(input_data, output_dir):
 
 def enc2pngcolor(input_data):
     img = Image.frombuffer('RGB', (960, 960), input_data)
-    img.save("../doc/encrypted_lenna.png")
+    img.save(dir + "encrypted_lenna.png")
 
 
 def enc2pnggrey(input_data):
     img = Image.frombuffer('RGB', (100, 100), input_data)
-    img.save("../doc/encrypted_lenna.png")
+    img.save(dir + "encrypted_lenna.png")

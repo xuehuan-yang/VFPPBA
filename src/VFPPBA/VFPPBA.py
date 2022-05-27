@@ -17,8 +17,11 @@ import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
 from charm.core.math.integer import integer, int2Bytes
-import image
 from sympy import *
+import sys
+sys.path.append('../')
+from common.image import *
+from common.msp import *
 
 
 class MJ18(ABEncMultiAuth):
@@ -406,7 +409,7 @@ def coeffs_function(n, inputarray):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = '../doc/13_vfippre.txt'
+    output_txt = './VFPPBA.txt'
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
         f.write(
@@ -433,8 +436,8 @@ def main():
                 print("M_input:    ", m)
                 print("M_output_1: ", M_output_1)
                 print("M_output_2: ", M_output_2)
-                image.encrypt(m)
-                image.decrypt(M_output_1)
+                encrypt(m)
+                decrypt(M_output_1)
 
                 sttot, retot, enctot, dec1tot, autot, trtot, dec2tot = sttot + setuptime, retot + registertime, enctot + enctime, dec1tot + dec1time, autot + authorizetime, trtot + transformtime, dec2tot + dec2time
                 print("sttot:", sttot)

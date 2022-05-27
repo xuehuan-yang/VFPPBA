@@ -7,7 +7,10 @@ from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
-import image
+import sys
+sys.path.append('../')
+from common.image import *
+from common.msp import *
 
 
 class MJ18(ABEncMultiAuth):
@@ -326,7 +329,7 @@ def C6_function(n, c0, c2n, d8n, d5, c3, d6, c1, d4, d9, y):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = '../doc/12_ibbpre.txt'
+    output_txt = './MRBPRE.txt'
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
         f.write(
@@ -352,8 +355,8 @@ def main():
                 print("M_output_2:  ", M_output_2)
                 m_inputkey = group.serialize(M).decode("utf-8")
                 m_outputkey = group.serialize(M_output_1).decode("utf-8")
-                image.encrypt(m_inputkey)
-                image.decrypt(m_outputkey)
+                encrypt(m_inputkey)
+                decrypt(m_outputkey)
 
                 sttot, rgtot, enctot, dec1tot, autot, trtot, dec2tot = sttot + setuptime, rgtot + registertime + register1time, enctot + enctime, dec1tot + dec1time, autot + authorizetime, trtot + transformtime, dec2tot + dec2time
 

@@ -4,15 +4,16 @@ Policy-based Broadcast Access Authorization for Flexible Data Sharing in Clouds
 https://ieeexplore.ieee.org/document/9431697
 """
 import random
-
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
 from charm.core.math.integer import int2Bytes
-from msp import MSP
-import image
+import sys
+sys.path.append('../')
+from common.image import *
+from common.msp import *
 
 
 class MJ18(ABEncMultiAuth):
@@ -241,7 +242,7 @@ def temp_function(Snew, alpha):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = '../doc/15_ibpre.txt'
+    output_txt = './DZQ.txt'
     ahnipe = MJ18(groupObj)
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
@@ -272,8 +273,10 @@ def main():
 
                 m_inputkey = group.serialize(m).decode("utf-8")
                 m_outputkey = group.serialize(rec_msg1).decode("utf-8")
-                image.encrypt(m_inputkey)
-                image.decrypt(m_outputkey)
+                encrypt(m_inputkey)
+                decrypt(m_outputkey)
+                # image.encrypt(m_inputkey)
+                # image.decrypt(m_outputkey)
 
                 sttot, kgtot, enctot, dec1tot, rktot, retot, dec2tot = sttot + setuptime, kgtot + keygen1time + keygen2time, enctot + enctime, dec1tot + dec1time, rktot + rkgentime, retot + reenctime, dec2tot + dec2time
 

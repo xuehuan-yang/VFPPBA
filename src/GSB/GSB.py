@@ -11,8 +11,10 @@ import time
 import numpy as np
 from charm.toolbox.hash_module import Hash
 from charm.core.math.integer import integer, int2Bytes
-from msp import MSP
-import image
+import sys
+sys.path.append('../')
+from common.image import *
+from common.msp import *
 
 
 class MJ18(ABEncMultiAuth):
@@ -241,7 +243,7 @@ def generate_random_str(length):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = '../doc/14_abpre.txt'
+    output_txt = './GSB.txt'
     ahnipe = MJ18(groupObj)
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
@@ -281,8 +283,8 @@ def main():
                 else:
                     print("Decryption failed.")
 
-                image.encrypt(m)
-                image.decrypt(rec_msg1)
+                encrypt(m)
+                decrypt(rec_msg1)
 
                 sttot, kgtot, enc1tot, dec1tol, rktot, retot, dec2tot = sttot + setuptime, kgtot + keygen1time + keygen2time, enc1tot + enctime, dec1tol + dec1time, rktot + rekeytime, retot + reenctime, dec2tot + dec2time
 
