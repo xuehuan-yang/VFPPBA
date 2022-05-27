@@ -5,4 +5,5 @@
 # charm https://github.com/JHUISI/charm
 # python 3.6.13
 # ubuntu 18.04.6 LTS
+# raspberry pi 4
 ```
