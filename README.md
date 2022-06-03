@@ -6,4 +6,7 @@
 # python 3.6.13
 # ubuntu 18.04.6 LTS
 # raspberry pi 4
+# opencv 3.4.2
+# pycrypto 2.6.1
+# matplotlib 3.3.4
 ```
