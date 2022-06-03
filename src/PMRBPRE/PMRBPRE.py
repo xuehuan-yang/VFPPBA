@@ -329,7 +329,7 @@ def C6_function(n, c0, c2n, d8n, d5, c3, d6, c1, d4, d9, y):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = './MRBPRE.txt'
+    output_txt = './PMRBPRE.txt'
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
         f.write(
