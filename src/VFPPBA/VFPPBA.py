@@ -409,7 +409,7 @@ def coeffs_function(n, inputarray):
 def main():
     groupObj = PairingGroup('SS512')
     n_array = np.arange(5, 30, 5)
-    output_txt = './VFPBA.txt'
+    output_txt = './VFPPBA.txt'
 
     with open(output_txt, 'w+', encoding='utf-8') as f:
         f.write(
