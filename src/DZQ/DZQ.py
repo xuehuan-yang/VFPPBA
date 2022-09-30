@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Policy-based Broadcast Access Authorization for Flexible Data Sharing in Clouds
-https://ieeexplore.ieee.org/document/9431697
 """
 import random
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair

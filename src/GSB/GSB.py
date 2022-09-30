@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 # Ciphertext-Policy Attribute-Based Encryption: An Expressive, Efficient, and Provably Secure Realization
-# https://github.com/sagrawal87/ABE/blob/master/ABE/waters11/__init__.py
 """
 import random
 
