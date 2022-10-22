@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-"""
+
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth
 import time
