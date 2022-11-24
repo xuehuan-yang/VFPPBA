@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 # Verifiable Anonymous Identify-based Cross-domain Transformation for Flexible Data Sharing
 """

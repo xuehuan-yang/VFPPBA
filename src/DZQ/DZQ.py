@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Policy-based Broadcast Access Authorization for Flexible Data Sharing in Clouds
-"""
 import random
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
 from charm.toolbox.ABEncMultiAuth import ABEncMultiAuth

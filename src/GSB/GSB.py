@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-# Ciphertext-Policy Attribute-Based Encryption: An Expressive, Efficient, and Provably Secure Realization
-"""
 import random
 
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
