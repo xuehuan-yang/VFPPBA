@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-# ref
-# https://github.com/nikosft/IB-PRE/blob/master/pre_mg07b.py
 #  H: {0,1} -> G1       H(0) only use H(0)
 # from charm.toolbox.hash_module import Hash
 # H = Hash(group)
