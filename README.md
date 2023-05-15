@@ -6,6 +6,14 @@ ubuntu 18.04 or 20.04 or 22.04
 ```bash
 sudo apt-get install git tree
 
+# install conda
+cd ~/alphabet/charm/
+git clone https://github.com/xuehuan-yang/VFPPBA.git
+
+cd ~/alphabet/software/
+wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+bash Anaconda3-2021.11-Linux-x86_64.sh 
+
 ```
 
 ```bash
