@@ -43,7 +43,7 @@ pycrypto: 2.6.1
 
 ```bash
 # openssl 
-cd ~/alphabet/charm
+cd ~/alphabet/charm/
 wget https://www.openssl.org/source/openssl-1.1.1n.tar.gz
 tar -zxvf openssl-1.1.1n.tar.gz
 cd ~/alphabet/charm/openssl-1.1.1n/
@@ -53,7 +53,7 @@ sudo make install
 dpkg -l | grep openssl
 
 # gmp-6.2.1
-cd ~/alphabet/charm
+cd ~/alphabet/charm/
 wget https://gmplib.org/download/gmp/gmp-6.2.1.tar.zst
 tar -I zstd -xvf gmp-6.2.1.tar.zst
 cd gmp-6.2.1/
@@ -64,7 +64,7 @@ sudo make install
 dpkg -l | grep gmp
 
 # pbc-0.5.14
-cd ~/alphabet/charm
+cd ~/alphabet/charm/
 wget http://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz
 tar -xvf pbc-0.5.14.tar.gz
 cd pbc-0.5.14/
@@ -75,7 +75,7 @@ sudo ldconfig
 dpkg -l | grep pbc
 
 # charm
-cd ~/alphabet/charm
+cd ~/alphabet/charm/
 git clone https://github.com/JHUISI/charm.git
 cd charm/
 sudo ./configure.sh
@@ -93,7 +93,7 @@ sudo ldconfig /usr/local/lib64/
 sudo ldconfig /usr/local/lib/
 
 # ABE
-cd ~/alphabet/charm
+cd ~/alphabet/charm/
 git clone https://github.com/sagrawal87/ABE.git
 cd ABE/
 pip install -e ./
