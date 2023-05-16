@@ -4,6 +4,7 @@ ubuntu 18.04 or 20.04 or 22.04
 ```
 
 ```bash
+# system
 sudo apt-get install git tree
 sudo apt-get install zstd flex bison gcc build-essential python3-pip
 sudo apt-get install python3-setuptools python3-dev libssl-dev
