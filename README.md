@@ -12,6 +12,7 @@ sudo apt-get install python3-setuptools python3-dev libssl-dev
 # install conda
 cd ~/alphabet/charm/
 git clone https://github.com/xuehuan-yang/VFPPBA.git
+git clone https://github.com/xuehuan-yang/PSME.git
 
 cd ~/alphabet/software/
 wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
@@ -43,6 +44,7 @@ pycrypto: 2.6.1
 
 ```bash
 # openssl 
+conda activate charm
 cd ~/alphabet/charm/
 wget https://www.openssl.org/source/openssl-1.1.1n.tar.gz
 tar -zxvf openssl-1.1.1n.tar.gz
@@ -53,6 +55,7 @@ sudo make install
 dpkg -l | grep openssl
 
 # gmp-6.2.1
+conda activate charm
 cd ~/alphabet/charm/
 wget https://gmplib.org/download/gmp/gmp-6.2.1.tar.zst
 tar -I zstd -xvf gmp-6.2.1.tar.zst
@@ -64,6 +67,7 @@ sudo make install
 dpkg -l | grep gmp
 
 # pbc-0.5.14
+conda activate charm
 cd ~/alphabet/charm/
 wget http://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz
 tar -xvf pbc-0.5.14.tar.gz
@@ -75,6 +79,7 @@ sudo ldconfig
 dpkg -l | grep pbc
 
 # charm
+conda activate charm
 cd ~/alphabet/charm/
 git clone https://github.com/JHUISI/charm.git
 cd charm/
@@ -92,14 +97,16 @@ sudo make install
 sudo ldconfig /usr/local/lib64/ 
 sudo ldconfig /usr/local/lib/
 
+cd ~/alphabet/charm/
+rm -rf openssl-1.1.1n.tar.gz
+rm -rf gmp-6.2.1.tar.zst
+rm -rf pbc-0.5.14.tar.gz
+
 # ABE
+conda activate charm
 cd ~/alphabet/charm/
 git clone https://github.com/sagrawal87/ABE.git
 cd ABE/
 pip install -e ./
-
-# image-encryptor
-https://github.com/swayamadi/image-encryptor.git
-import image
 
 ```
