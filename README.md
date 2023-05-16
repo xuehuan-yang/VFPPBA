@@ -13,6 +13,8 @@ git clone https://github.com/xuehuan-yang/VFPPBA.git
 cd ~/alphabet/software/
 wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
 bash Anaconda3-2021.11-Linux-x86_64.sh 
+(-> ENTER*100times -> yes -> PREFIX=/home/apollo/anaconda3)
+source ~/.bashrc
 
 ```
 
