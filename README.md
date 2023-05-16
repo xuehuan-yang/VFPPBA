@@ -110,3 +110,11 @@ cd ABE/
 pip install -e ./
 
 ```
+
+
+```bash
+# run sample
+conda activate charm
+cd ~/alphabet/charm/VFPPBA/src/VFPPBA
+python VFPPBA.py
+```
